@@ -73,7 +73,7 @@ Testing
 * -le: loading pretrained embeddings
 * -path: model saved path
 
-> [2019.08 Update] Now the decoder can generate all the (domain, slot) pairs in one batch at the same time to speedup decoding process. If you face any memory error, you can set flag "--parallel_decode=0" to decode each  (domain, slot) pair one-by-one.
+> [2019.08 Update] Now the decoder can generate all the (domain, slot) pairs in one batch at the same time to speedup decoding process. You can set flag "--parallel_decode=1" to decode all (domain, slot) pairs in one batch.
 
 
 ## Unseen Domain DST
@@ -104,6 +104,9 @@ GEM
 ❱❱❱ python3 GEM_train.py -bsz=8 -dr=0.2 -lr=0.001 -path={save_path_except_domain} -exceptd=${except_domain}
 ```
 * -l_ewc: lambda value in EWC training
+
+## Other Notes
+- We found that there might be some variances in different runs, especially for the few-shot setting. For our own experiments, we only use one random seed (seed=10) to do the experiments reported in the paper. Please check the results for average three runs in our [ACL presentation](https://jasonwu0731.github.io/files/TRADE-DST-ACL-2019.pdf). 
 
 ## Bug Report
 Feel free to create an issue or send email to jason.wu@connect.ust.hk
