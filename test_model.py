@@ -50,5 +50,5 @@ all_point_outputs, all_gate_outputs, words_point_out, words_class_out = decoder.
                                                                                         )
 
 
-
+print()
 

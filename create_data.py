@@ -4,6 +4,7 @@ import json
 import os
 import re
 import shutil
+import urllib3
 import urllib.request
 from collections import OrderedDict
 from io import BytesIO
@@ -306,7 +307,7 @@ def get_dial(dialogue):
 
 def loadData():
     data_url = "data/multi-woz/data.json"
-    dataset_url = "https://www.repository.cam.ac.uk/bitstream/handle/1810/280608/MULTIWOZ2.zip?sequence=3&isAllowed=y"
+    dataset_url = "https://www.repository.cam.ac.uk/bitstream/handle/1810/294507/MULTIWOZ2.1.zip?sequence=1&isAllowed=y"
     if not os.path.exists("data"):
         os.makedirs("data")
         os.makedirs("data/multi-woz")
@@ -317,10 +318,10 @@ def loadData():
         zip_ref = ZipFile(BytesIO(resp.read()))
         zip_ref.extractall("data/multi-woz")
         zip_ref.close()
-        shutil.copy('data/multi-woz/MULTIWOZ2 2/data.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2 2/valListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2 2/testListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2 2/dialogue_acts.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.2/data.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.2/valListFile.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.2/testListFile.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.2/dialogue_acts.json', 'data/multi-woz/')
 
 
 def getDomain(idx, log, domains, last_domain):

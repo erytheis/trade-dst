@@ -1,4 +1,4 @@
-from utils.config import *
+from utils3.config import *
 from models.TRADE import *
 from copy import deepcopy
 
