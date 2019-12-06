@@ -85,17 +85,17 @@ if args['dataset']=='multiwoz':
 else:
     print("You need to provide the --dataset information")
 
-_, _, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq(True, args['task'], False, batch_size=BSZ)
+_, _, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq_woz(True, args['task'], False, batch_size=BSZ)
 
 ### LOAD DATA
 args["data_ratio"] = 1
-train_GEM,  _, _, _, _, _, _, _ = prepare_data_seq(True, args['task'], False, batch_size=64)
+train_GEM,  _, _, _, _, _, _, _ = prepare_data_seq_woz(True, args['task'], False, batch_size=64)
 
 ### finetune on
 args['only_domain'] = except_domain
 args['except_domain'] = ''
 args['fisher_sample'] = 0
-train_single, dev_single, test_single, _, _, SLOTS_LIST_single, _, _ = prepare_data_seq(True, args['task'], False, batch_size=BSZ)
+train_single, dev_single, test_single, _, _, SLOTS_LIST_single, _, _ = prepare_data_seq_woz(True, args['task'], False, batch_size=BSZ)
 args['except_domain'] = except_domain
 
 #### LOAD MODEL 

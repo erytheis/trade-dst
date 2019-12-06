@@ -18,7 +18,7 @@ if args['dataset']=='multiwoz':
 else:
     print("You need to provide the --dataset information")
 
-train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq(False, args['task'], False, batch_size=BSZ)
+train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq_woz(False, args['task'], False, batch_size=BSZ)
 
 model = globals()[decoder](
     int(HDD), 

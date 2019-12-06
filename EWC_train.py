@@ -27,7 +27,7 @@ if(os.path.isfile(filename_fisher) ):
     print("Load Fisher Matrix" + filename_fisher)
     [fisher,optpar] = pickle.load(open(filename_fisher,'rb'))
 else:
-    train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq(True, args['task'], False, batch_size=1)
+    train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq_woz(True, args['task'], False, batch_size=1)
     model = globals()[args["decoder"]](
                                         int(HDD), 
                                         lang=lang, 
@@ -62,13 +62,13 @@ else:
 
 
 ### LOAD DATA
-train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq(True, args['task'], False, batch_size=BSZ)
+train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq_woz(True, args['task'], False, batch_size=BSZ)
 
 args['only_domain'] = except_domain
 args['except_domain'] = ''
 args["fisher_sample"] = 0
 args["data_ratio"] = 1
-train_single, dev_single, test_single, _, _, SLOTS_LIST_single, _, _ = prepare_data_seq(True, args['task'], False, batch_size=BSZ)
+train_single, dev_single, test_single, _, _, SLOTS_LIST_single, _, _ = prepare_data_seq_woz(True, args['task'], False, batch_size=BSZ)
 args['except_domain'] = except_domain
 
 

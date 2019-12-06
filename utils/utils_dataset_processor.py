@@ -87,14 +87,14 @@ class DialogProcessor:
 
         if self.training:
             pair_train, train_max_len, slot_train = self.read_langs(self.path_train, "train")
+            train = self.get_seq(pair_train, batch_size, True)
+            nb_train_vocab = self.lang.n_words
+
             pair_dev, dev_max_len, slot_dev = self.read_langs(self.path_dev, "dev")
             pair_test, test_max_len, slot_test = self.read_langs(self.path_test, "test")
 
-            train = self.get_seq(pair_train, batch_size, True)
             dev = self.get_seq(pair_dev, eval_batch, False)
             test = self.get_seq(pair_test, eval_batch, False)
-
-            nb_train_vocab = self.lang.n_words
 
             if os.path.exists(self.folder_name + self.lang_name) and os.path.exists(self.folder_name + self.mem_lang_name):
                 print("[Info] Loading saved lang files...")
@@ -188,6 +188,12 @@ class Lang:
                     self.index_word(ss)
                 for v in value.split(" "):
                     self.index_word(v)
+        elif type == 'value':
+            for v in sent.split(" "):
+                for vv in v.split("_"):
+                    self.index_word(vv)
+
+
 
     def index_word(self, word):
         if word not in self.word2index:

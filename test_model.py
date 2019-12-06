@@ -1,5 +1,5 @@
 from create_data import createData, divideData
-from utils.utils_multiWOZ_DST import prepare_data_seq
+from utils.utils_multiWOZ_DST import prepare_data_seq_woz
 from utils.config import *
 from models.TRADE import *
 
@@ -10,7 +10,7 @@ args['learn'] = 0.001
 args['load_embedding'] = 1
 args['parallel_decode'] = False
 
-train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq(True)
+train, dev, test, test_special, lang, SLOTS_LIST, gating_dict, max_word = prepare_data_seq_woz(True)
 
 
 # Encoder Forward propagation
