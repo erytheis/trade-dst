@@ -39,9 +39,6 @@ class TRADE(nn.Module):
         self.encoder = EncoderRNN(self.lang.n_words, hidden_size, self.dropout)
         self.decoder = Generator(self.lang, self.encoder.embedding, self.lang.n_words, hidden_size, self.dropout, self.slots, self.nb_gate)
 
-
-
-        
         if path:
             if USE_CUDA:
                 print("MODEL {} LOADED".format(str(path)))
@@ -61,6 +58,9 @@ class TRADE(nn.Module):
         
         self.reset()
         if USE_CUDA:
+            if args["multi_gpu"] == 1:
+                self.encoder = nn.DataParallel(self.encoder, dim = 1)
+                self.decoder = nn.DataParallel(self.decoder, dim = 1)
             self.encoder.cuda()
             self.decoder.cuda()
 
