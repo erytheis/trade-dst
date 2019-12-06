@@ -86,7 +86,6 @@ if USE_CUDA:
     else:
         args["multi_gpu"] = 0
 
-args["batch"] = int(32)
 args["task"] = "dst"
 args["learn"] = 0.001
 args["le"] = int(1)
