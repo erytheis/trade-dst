@@ -79,7 +79,7 @@ if args["except_domain"] != "":
 if args["only_domain"] != "":
     args["addName"] += "Only" + args["only_domain"]
 
-args["dataset"] = "schema"
+args["dataset"] = "multi-woz"
 args["batch"] = int(32)
 args["task"] = "dst"
 args["learn"] = 0.001

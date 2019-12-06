@@ -8,12 +8,12 @@ from utils.config import *
 class SchemaProcessor(DialogProcessor):
     def __init__(self, training, sequicity):
         super().__init__(training, sequicity)
-        self.path_train = "/Users/khasbulat.kerimov/Projects/trade-dst/data/schema/train"
-        self.path_test = "/Users/khasbulat.kerimov/Projects/trade-dst/data/schema/test"
-        self.path_dev = "/Users/khasbulat.kerimov/Projects/trade-dst/data/schema/dev"
+        self.path_train = 'data/schema/train'
+        self.path_test = "data/schema/test"
+        self.path_dev = "data/schema/dev"
         self.dataset = 'schema'
 
-        ontology_dir = "/Users/khasbulat.kerimov/Projects/trade-dst/data/schema/ontology.json"
+        ontology_dir = "data/schema/ontology.json"
         self.ontology, self.domains, self.ALL_SLOTS = read_ontology_file(ontology_dir)
 
         self.souce_dir = dirname(dirname(__file__))
