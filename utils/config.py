@@ -9,14 +9,14 @@ SOS_token = 3
 EOS_token = 2
 UNK_token = 0
 
+parser = argparse.ArgumentParser(description='TRADE Multi-Domain DST')
+
 if torch.cuda.is_available():
     USE_CUDA = True
 else:
     USE_CUDA = False
 
 MAX_LENGTH = 10
-
-parser = argparse.ArgumentParser(description='TRADE Multi-Domain DST')
 
 # Training Setting
 parser.add_argument('-ds', '--dataset', help='dataset', required=False, default="multiwoz")
@@ -78,6 +78,13 @@ if args["except_domain"] != "":
     args["addName"] += "Except" + args["except_domain"]
 if args["only_domain"] != "":
     args["addName"] += "Only" + args["only_domain"]
+
+if USE_CUDA:
+    if torch.cuda.device_count() > 1:
+        args["multi_gpu"] = 1
+        print("Let's use", torch.cuda.device_count(), "GPUs")
+    else:
+        args["multi_gpu"] = 0
 
 args["batch"] = int(32)
 args["task"] = "dst"
