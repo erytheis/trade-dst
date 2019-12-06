@@ -318,10 +318,10 @@ def loadData():
         zip_ref = ZipFile(BytesIO(resp.read()))
         zip_ref.extractall("data/multi-woz")
         zip_ref.close()
-        shutil.copy('data/multi-woz/MULTIWOZ2.2/data.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.2/valListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.2/testListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.2/dialogue_acts.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.1/data.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.1/valListFile.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.1/testListFile.json', 'data/multi-woz/')
+        shutil.copy('data/multi-woz/MULTIWOZ2.1/dialogue_acts.json', 'data/multi-woz/')
 
 
 def getDomain(idx, log, domains, last_domain):

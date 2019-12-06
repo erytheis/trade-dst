@@ -31,6 +31,9 @@ def run_training():
         slots=SLOTS_LIST,
         gating_dict=gating_dict,
         nb_train_vocab=max_word)
+
+    if args["multi_gpu"] == 1:
+        model = nn.DataParallel(model)
     # print("[Info] Slots include ", SLOTS_LIST)
     # print("[Info] Unpointable Slots include ", gating_dict)
     for epoch in range(2):

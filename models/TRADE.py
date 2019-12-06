@@ -63,9 +63,7 @@ class TRADE(nn.Module):
         if USE_CUDA:
             self.encoder.cuda()
             self.decoder.cuda()
-            if args["multi_gpu"] == 1:
-                self.encoder = nn.DataParallel(self.encoder)
-                self.decoder = nn.DataParallel(self.decoder)
+
 
     def print_loss(self):    
         print_loss_avg = self.loss / self.print_every
