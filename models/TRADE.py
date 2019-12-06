@@ -37,7 +37,10 @@ class TRADE(nn.Module):
         self.cross_entorpy = nn.CrossEntropyLoss()
 
         self.encoder = EncoderRNN(self.lang.n_words, hidden_size, self.dropout)
-        self.decoder = Generator(self.lang, self.encoder.embedding, self.lang.n_words, hidden_size, self.dropout, self.slots, self.nb_gate) 
+        self.decoder = Generator(self.lang, self.encoder.embedding, self.lang.n_words, hidden_size, self.dropout, self.slots, self.nb_gate)
+
+
+
         
         if path:
             if USE_CUDA:
@@ -60,6 +63,9 @@ class TRADE(nn.Module):
         if USE_CUDA:
             self.encoder.cuda()
             self.decoder.cuda()
+            if args["multi_gpu"] == 1:
+                self.encoder = nn.DataParallel(self.encoder)
+                self.decoder = nn.DataParallel(self.decoder)
 
     def print_loss(self):    
         print_loss_avg = self.loss / self.print_every
