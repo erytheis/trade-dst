@@ -15,6 +15,9 @@ class SchemaProcessor(DialogProcessor):
 
         ontology_dir = "data/schema/ontology.json"
         self.ontology, self.domains, self.ALL_SLOTS = read_ontology_file(ontology_dir)
+        self.domains = {key:idx for idx,key in enumerate(dict.fromkeys(self.domains))}
+
+
 
         self.souce_dir = dirname(dirname(__file__))
         self.dataset_dir = join(self.souce_dir, 'data/schema/')

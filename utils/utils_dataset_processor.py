@@ -56,7 +56,7 @@ class DialogProcessor:
                 data_info[k].append(pair[k])
 
         dataset = Dataset(data_info, self.lang.word2index, self.lang.word2index, self.sequicity,
-                          self.mem_lang.word2index)
+                          self.mem_lang.word2index, self.domains)
 
         if args["imbalance_sampler"] and type:
             data_loader = torch.utils.data.DataLoader(dataset=dataset,
@@ -205,7 +205,7 @@ class Lang:
 class Dataset(data.Dataset):
     """Custom data.Dataset compatible with data.DataLoader."""
 
-    def __init__(self, data_info, src_word2id, trg_word2id, sequicity, mem_word2id):
+    def __init__(self, data_info, src_word2id, trg_word2id, sequicity, mem_word2id, domains):
         """Reads source and target sequences from txt files."""
         self.ID = data_info['ID']
         self.turn_domain = data_info['turn_domain']
@@ -216,6 +216,7 @@ class Dataset(data.Dataset):
         self.turn_uttr = data_info['turn_uttr']
         self.generate_y = data_info["generate_y"]
         self.sequicity = sequicity
+        self.domains = domains
         self.num_total_seqs = len(self.dialog_history)
         self.src_word2id = src_word2id
         self.trg_word2id = trg_word2id
@@ -228,7 +229,7 @@ class Dataset(data.Dataset):
         turn_belief = self.turn_belief[index]
         gating_label = self.gating_label[index]
         turn_uttr = self.turn_uttr[index]
-        turn_domain = self.preprocess_domain(self.turn_domain[index])
+        turn_domain = self.domains[self.turn_domain[index]]
         generate_y = self.generate_y[index]
         generate_y = self.preprocess_slot(generate_y, self.trg_word2id)
         context = self.dialog_history[index]
@@ -279,10 +280,6 @@ class Dataset(data.Dataset):
         story = torch.Tensor(story)
         return story
 
-    def preprocess_domain(self, turn_domain):
-        domains = {"attraction": 0, "restaurant": 1, "taxi": 2, "train": 3, "hotel": 4, "hospital": 5, "bus": 6,
-                   "police": 7}
-        return domains[turn_domain]
 
 
 def collate_fn(data):

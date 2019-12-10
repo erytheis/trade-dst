@@ -21,6 +21,8 @@ class WozProcessor(DialogProcessor):
         self.path_dev = 'data/multi-woz/dev_dials.json'
         self.path_test = 'data/multi-woz/test_dials.json'
         self.dataset = 'multi-woz'
+        self.domains = {"attraction": 0, "restaurant": 1, "taxi": 2, "train": 3, "hotel": 4, "hospital": 5, "bus": 6,
+                        "police": 7}
 
         ontology = json.load(open("data/multi-woz/MULTIWOZ2.1/ontology.json", 'r'))
         self.ALL_SLOTS = get_slot_information(ontology)
@@ -39,7 +41,7 @@ class WozProcessor(DialogProcessor):
 
         if self.training:
             pair_train, train_max_len, slot_train = self.read_langs(self.path_train, "train")
-            train =self.get_seq(pair_train, batch_size, True)
+            train = self.get_seq(pair_train, batch_size, True)
             nb_train_vocab = self.lang.n_words
             pair_dev, dev_max_len, slot_dev = self.read_langs(self.path_dev, "dev")
             dev = self.get_seq(pair_dev, eval_batch, False)
@@ -91,7 +93,6 @@ class WozProcessor(DialogProcessor):
         print(SLOTS_LIST[3])
         LANG = [lang, mem_lang]
         return train, dev, test, test_4d, LANG, SLOTS_LIST, self.gating_dict, nb_train_vocab
-
 
     def read_langs(self, file_name, dataset, max_line=None):
         print(("Reading from {}".format(file_name)))
@@ -221,5 +222,3 @@ def get_slot_information(ontology):
     ontology_domains = dict([(k, v) for k, v in ontology.items() if k.split("-")[0] in EXPERIMENT_DOMAINS])
     SLOTS = [k.replace(" ", "").lower() if ("book" not in k) else k.lower() for k in ontology_domains.keys()]
     return SLOTS
-
-

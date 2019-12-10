@@ -19,7 +19,7 @@ else:
 MAX_LENGTH = 10
 
 # Training Setting
-parser.add_argument('-ds', '--dataset', help='dataset', required=False, default="multiwoz")
+parser.add_argument('-ds', '--dataset', help='dataset', required=False, default="schema")
 parser.add_argument('-t', '--task', help='Task Number', required=False, default="dst")
 parser.add_argument('-path', '--path', help='path of the file to load', required=False)
 parser.add_argument('-sample', '--sample', help='Number of Samples', required=False, default=None)
