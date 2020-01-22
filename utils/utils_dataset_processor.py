@@ -55,6 +55,11 @@ class DialogProcessor:
             for k in data_keys:
                 data_info[k].append(pair[k])
 
+        for key in data_info.keys():
+            data_info[key] = [] if data_info[key] is None else data_info[key]
+
+
+
         dataset = Dataset(data_info, self.lang.word2index, self.lang.word2index, self.sequicity,
                           self.mem_lang.word2index, self.domains)
 
@@ -107,6 +112,8 @@ class DialogProcessor:
             if not os.path.exists(emb_dump_path) and args["load_embedding"]:
                 dump_pretrained_emb(self.lang.word2index, self.lang.index2word, emb_dump_path)
         else:
+            self.open_saved_lang()
+
             pair_train, train_max_len, slot_train, train, nb_train_vocab = [], 0, {}, [], 0
             pair_dev, dev_max_len, slot_dev = self.read_langs(self.path_dev, "dev")
             pair_test, test_max_len, slot_test = self.read_langs(self.path_test, "test")

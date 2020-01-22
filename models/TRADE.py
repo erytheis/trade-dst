@@ -155,8 +155,9 @@ class TRADE(nn.Module):
         all_prediction = {}
         inverse_unpoint_slot = dict([(v, k) for k, v in self.gating_dict.items()])
         pbar = tqdm(enumerate(dev),total=len(dev))
-        for j, data_dev in pbar: 
+        for j, data_dev in pbar:
             # Encode and Decode
+            if j > 16/args['batch']: break
             batch_size = len(data_dev['context_len'])
             _, gates, words, class_words = self.encode_and_decode(data_dev, False, slot_temp)
 
@@ -305,7 +306,7 @@ class EncoderRNN(nn.Module):
         # self.domain_W = nn.Linear(hidden_size, nb_domain)
 
         if args["load_embedding"]:
-            with open(os.path.join("data/", 'emb{}.json'.format(vocab_size))) as f:
+            with open(os.path.join("data/" + args['dataset'],"/" ,  'emb{}.json'.format(vocab_size))) as f:
                 E = json.load(f)
             new = self.embedding.weight.data.new
             self.embedding.weight.data.copy_(new(E))
@@ -324,7 +325,7 @@ class EncoderRNN(nn.Module):
 
     def forward(self, input_seqs, input_lengths, hidden=None):
         # Note: we run this all at once (over multiple batches of multiple sequences)
-        embedded = self.embedding(input_seqs)
+        embedded = self.embedding.forward(input_seqs)
         embedded = self.dropout_layer(embedded)
         hidden = self.get_state(input_seqs.size(1))
         if input_lengths:
@@ -418,7 +419,7 @@ class Generator(nn.Module):
                 vocab_pointer_switches = self.sigmoid(self.W_ratio(p_gen_vec))
                 p_context_ptr = torch.zeros(p_vocab.size())
                 if USE_CUDA: p_context_ptr = p_context_ptr.cuda()
-                
+
                 p_context_ptr.scatter_add_(1, story.repeat(len(slot_temp), 1), prob)
 
                 final_p_vocab = (1 - vocab_pointer_switches).expand_as(p_context_ptr) * p_context_ptr + \
@@ -428,7 +429,7 @@ class Generator(nn.Module):
                 
                 for si in range(len(slot_temp)):
                     words_point_out[si].append(words[si*batch_size:(si+1)*batch_size])
-                
+
                 all_point_outputs[:, :, wi, :] = torch.reshape(final_p_vocab, (len(slot_temp), batch_size, self.vocab_size))
                 
                 if use_teacher_forcing:

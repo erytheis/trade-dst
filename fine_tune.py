@@ -10,7 +10,7 @@ BSZ = int(args['batch']) if args['batch'] else int(directory[2].split('BSZ')[1].
 args["decoder"] = "TRADE"
 args["HDD"] = HDD
 
-if args['dataset']=='multiwoz':
+if args['dataset']=='multiwoz' or args['dataset']== 'schema':
     from utils.utils_multiWOZ_DST import *
 else:
     print("You need to provide the --dataset information")

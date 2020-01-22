@@ -306,22 +306,22 @@ def get_dial(dialogue):
 
 
 def loadData():
-    data_url = "data/multi-woz/data.json"
+    data_url = "data/multiwoz/data.json"
     dataset_url = "https://www.repository.cam.ac.uk/bitstream/handle/1810/294507/MULTIWOZ2.1.zip?sequence=1&isAllowed=y"
     if not os.path.exists("data"):
         os.makedirs("data")
-        os.makedirs("data/multi-woz")
+        os.makedirs("data/multiwoz")
 
     if not os.path.exists(data_url):
         print("Downloading and unzipping the MultiWOZ dataset")
         resp = urllib.request.urlopen(dataset_url)
         zip_ref = ZipFile(BytesIO(resp.read()))
-        zip_ref.extractall("data/multi-woz")
+        zip_ref.extractall("data/multiwoz")
         zip_ref.close()
-        shutil.copy('data/multi-woz/MULTIWOZ2.1/data.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.1/valListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.1/testListFile.json', 'data/multi-woz/')
-        shutil.copy('data/multi-woz/MULTIWOZ2.1/dialogue_acts.json', 'data/multi-woz/')
+        shutil.copy('data/multiwoz/MULTIWOZ2.1/data.json', 'data/multiwoz/')
+        shutil.copy('data/multiwoz/MULTIWOZ2.1/valListFile.json', 'data/multiwoz/')
+        shutil.copy('data/multiwoz/MULTIWOZ2.1/testListFile.json', 'data/multiwoz/')
+        shutil.copy('data/multiwoz/MULTIWOZ2.1/dialogue_acts.json', 'data/multiwoz/')
 
 
 def getDomain(idx, log, domains, last_domain):
@@ -360,10 +360,10 @@ def createData():
     # dic = delexicalize.prepareSlotValuesIndependent()
     delex_data = {}
 
-    fin1 = open('data/multi-woz/data.json', 'r')
+    fin1 = open('data/multiwoz/data.json', 'r')
     data = json.load(fin1)
 
-    fin2 = open('data/multi-woz/dialogue_acts.json', 'r')
+    fin2 = open('data/multiwoz/dialogue_acts.json', 'r')
     data2 = json.load(fin2)
 
     for didx, dialogue_name in enumerate(data):
@@ -400,7 +400,7 @@ def createData():
         # if didx > 10:
         #     break
 
-    # with open('data/multi-woz/woz2like_data.json', 'w') as outfile:
+    # with open('data/multiwoz/woz2like_data.json', 'w') as outfile:
     #     json.dump(delex_data, outfile)
 
     return delex_data
@@ -423,13 +423,13 @@ def divideData(data):
     """Given test and validation sets, divide
     the data for three different sets"""
     testListFile = []
-    fin = open('data/multi-woz/testListFile.json', 'r')
+    fin = open('data/multiwoz/testListFile.json', 'r')
     for line in fin:
         testListFile.append(line[:-1])
     fin.close()
 
     valListFile = []
-    fin = open('data/multi-woz/valListFile.json', 'r')
+    fin = open('data/multiwoz/valListFile.json', 'r')
     for line in fin:
         valListFile.append(line[:-1])
     fin.close()

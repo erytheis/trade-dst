@@ -12,19 +12,20 @@ from utils.fix_label import fix_general_label_error
 from utils.utils_dataset_processor import dump_pretrained_emb, DialogProcessor
 
 EXPERIMENT_DOMAINS = ["hotel", "train", "restaurant", "attraction", "taxi"]
+MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class WozProcessor(DialogProcessor):
     def __init__(self, training, sequicity):
         super().__init__(training, sequicity)
-        self.path_train = 'data/multi-woz/train_dials.json'
-        self.path_dev = 'data/multi-woz/dev_dials.json'
-        self.path_test = 'data/multi-woz/test_dials.json'
+        self.path_train = os.path.join(MODULE_DIR, '..', 'data/multiwoz/train_dials.json')
+        self.path_dev = os.path.join(MODULE_DIR, '..', 'data/multiwoz/dev_dials.json')
+        self.path_test = os.path.join(MODULE_DIR, '..', 'data/multiwoz/test_dials.json')
         self.dataset = 'multi-woz'
         self.domains = {"attraction": 0, "restaurant": 1, "taxi": 2, "train": 3, "hotel": 4, "hospital": 5, "bus": 6,
                         "police": 7}
 
-        ontology = json.load(open("data/multi-woz/MULTIWOZ2.1/ontology.json", 'r'))
+        ontology = json.load(open(os.path.join(MODULE_DIR, '..', "data/multiwoz/MULTIWOZ2.1/ontology.json"), 'r'))
         self.ALL_SLOTS = get_slot_information(ontology)
 
     def prepare_data_seq_woz(self, task="dst", sequicity=0, batch_size=100):
@@ -55,14 +56,14 @@ class WozProcessor(DialogProcessor):
                 print("[Info] Dumping lang files...")
                 self.write_saved_lang()
 
-            emb_dump_path = 'data/emb{}.json'.format(len(self.lang.index2word))
+            emb_dump_path = os.path.join(MODULE_DIR,'..', 'data/emb{}.json').format(len(self.lang.index2word))
             if not os.path.exists(emb_dump_path) and args["load_embedding"]:
                 dump_pretrained_emb(self.lang.word2index, self.lang.index2word, emb_dump_path)
         else:
             with open(folder_name + self.lang_name, 'rb') as handle:
-                lang = pickle.load(handle)
+                self.lang = pickle.load(handle)
             with open(folder_name + self.mem_lang_name, 'rb') as handle:
-                mem_lang = pickle.load(handle)
+                self.mem_lang = pickle.load(handle)
 
             pair_train, train_max_len, slot_train, train, nb_train_vocab = [], 0, {}, [], 0
             pair_dev, dev_max_len, slot_dev = self.read_langs(self.path_dev, "dev")
@@ -80,9 +81,9 @@ class WozProcessor(DialogProcessor):
         print("Read %s pairs train" % len(pair_train))
         print("Read %s pairs dev" % len(pair_dev))
         print("Read %s pairs test" % len(pair_test))
-        print("Vocab_size: %s " % lang.n_words)
+        print("Vocab_size: %s " % self.lang.n_words)
         print("Vocab_size Training %s" % nb_train_vocab)
-        print("Vocab_size Belief %s" % mem_lang.n_words)
+        print("Vocab_size Belief %s" % self.mem_lang.n_words)
         print("Max. length of dialog words for RNN: %s " % max_word)
         print("USE_CUDA={}".format(USE_CUDA))
 
@@ -91,7 +92,7 @@ class WozProcessor(DialogProcessor):
         print(SLOTS_LIST[2])
         print("[Test Set Slots]: Number is {} in total".format(str(len(SLOTS_LIST[3]))))
         print(SLOTS_LIST[3])
-        LANG = [lang, mem_lang]
+        LANG = [self.lang, self.mem_lang]
         return train, dev, test, test_4d, LANG, SLOTS_LIST, self.gating_dict, nb_train_vocab
 
     def read_langs(self, file_name, dataset, max_line=None):

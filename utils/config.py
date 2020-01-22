@@ -19,7 +19,7 @@ else:
 MAX_LENGTH = 10
 
 # Training Setting
-parser.add_argument('-ds', '--dataset', help='dataset', required=False, default="schema")
+parser.add_argument('-ds', '--dataset', help='dataset', required=False, default="multiwoz")
 parser.add_argument('-t', '--task', help='Task Number', required=False, default="dst")
 parser.add_argument('-path', '--path', help='path of the file to load', required=False)
 parser.add_argument('-sample', '--sample', help='Number of Samples', required=False, default=None)
@@ -29,8 +29,7 @@ parser.add_argument('-all_vocab', '--all_vocab', help='', required=False, defaul
 parser.add_argument('-imbsamp', '--imbalance_sampler', help='', required=False, default=0, type=int)
 parser.add_argument('-data_ratio', '--data_ratio', help='', required=False, default=100, type=int)
 parser.add_argument('-um', '--unk_mask', help='mask out input token to UNK', type=int, required=False, default=1)
-parser.add_argument('-bsz', '--batch', help='Batch_size', required=False, type=int)
-
+parser.add_argument('-bsz', '--batch', help='Batch_size', required=False, type=int, default = 32)
 # Testing Setting
 parser.add_argument('-rundev', '--run_dev_testing', help='', required=False, default=0, type=int)
 parser.add_argument('-viz', '--vizualization', help='vizualization', type=int, required=False, default=0)
@@ -43,7 +42,7 @@ parser.add_argument('-eb', '--eval_batch', help='Evaluation Batch_size', require
 parser.add_argument('-gate', '--use_gate', help='', required=False, default=1, type=int)
 parser.add_argument('-le', '--load_embedding', help='', required=False, default=0, type=int)
 parser.add_argument('-femb', '--fix_embedding', help='', required=False, default=0, type=int)
-parser.add_argument('-paral', '--parallel_decode', help='', required=False, default=1, type=int)
+parser.add_argument('-paral', '--parallel_decode', help='', required=False, default=0, type=int)
 
 # Model Hyper-Parameters
 parser.add_argument('-dec', '--decoder', help='decoder model', required=False, default="TRADE")
@@ -88,7 +87,8 @@ if USE_CUDA:
 
 args["task"] = "dst"
 args["learn"] = 0.001
-args["le"] = int(1)
+# args["le"] = int(0)
 args["drop"] = 0.2
+args['batch'] = int(8)
 
 print(str(args))
